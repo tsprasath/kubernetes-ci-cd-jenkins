@@ -30,7 +30,7 @@ spec:
         tier: hello-airwolfnh
     spec:
       containers:
-      - image: __IMAGE__
+      - image: airwolfnh/hello-airwolfnh
         name: hello-airwolfnh
         ports:
         - containerPort: 80

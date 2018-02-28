@@ -4,42 +4,63 @@ This is what you are going to need to do this how to :
 1) A kubernetes cluster ( it can be the real deal or minikube)
 2) Account with docker hub to push your images( Or you can use your own registry if you know what you are doing :) )
 3) Account with github
-4) Fork my repo ( `git clone https://github.com/airwolfnh/kubernetes-ci-cd-jenkins.git`)
+4) Fork my repo (`https://github.com/airwolfnh/kubernetes-ci-cd-jenkins`)
 5) Docker 
 
 So let's do this 
 1) If you are doing with minikube, you can start it like this :
-1.1) Start up the Kubernetes cluster with Minikube, giving it some extra resources. : minikube start --memory 4000 --cpus 2 --kubernetes-version v1.8.0
-1.2) Enable the Minikube add-ons Heapster and Ingress: minikube addons enable heapster; minikube addons enable ingress
+1.1) Start up the Kubernetes cluster with Minikube, giving it some extra resources:
+```shell
+minikube start --memory 4000 --cpus 2 --kubernetes-version v1.8.0
+```
 
-2) Deploy the public nginx image from DockerHub into a pod. Nginx is an open source web server that will automatically download from Docker Hub if it’s not available locally : kubectl run nginx --image nginx --port 80
+1.2) Enable the Minikube add-ons Heapster and Ingress: 
+```shell
+minikube addons enable heapster; minikube addons enable ingress
+```
 
-3) Create a service for deployment. This will expose the nginx pod so you can access it with a web browser: kubectl expose deployment nginx --type NodePort --port 80
+2) Deploy the public nginx image from DockerHub into a pod. Nginx is an open source web server that will automatically download from Docker Hub if it’s not available locally : 
+```shell
+kubectl run nginx --image nginx --port 80
+```
 
-4) Launch a web browser to test the service. The nginx welcome page displays, which means the service is up and running : minikube service nginx 
+3) Create a service for deployment. This will expose the nginx pod so you can access it with a web browser: 
+```shell
+kubectl expose deployment nginx --type NodePort --port 80
+```
 
-5) git clone ....
+4) Launch a web browser to test the service. The nginx welcome page displays, which means the service is up and running :
+```shell
+ minikube service nginx 
+```
 
-6) Let’s make a change to an HTML file in the cloned project. Open the /applications/hello-airwolfnh/index.html file in your favorite text editor (for example, you can use nano by running the command 'nano applications/hello-airwolfnh/index.html' in a separate terminal). Change some text inside one of the tags. For example, change “Hello to you all!” to “Hello world!”. Save the file.
+6) Let’s make a change to an HTML file in the cloned project. Open the /application/index.html file in your favorite text editor. Change some text inside one of the tags. For example, change “Hello to you all!” to “Hello world!”. Save the file.
 
 7) Now let’s build an image, giving it a special name that points to our local cluster registry.
-
-docker build -t airwolfnh/hello-airwolfnh:latest -f applications/hello-airwolfnh/Dockerfile applications/hello-airwolfnh
-
+```shell
+docker build -t airwolfnh/hello-airwolfnh:latest -f application/Dockerfile application/hello-airwolfnh
+```
 
 8) Now you have to push this image to your registry , for me that would be :
+```shell
 docker loging ( put your user/pass)
 docker push docker.io/airwolnh/hello-airwolfnh:latest ( replace airwolfnh with your id , ex: docker push docker.io/MY_DOCKER_USERNAME/hello-airwolfnh:latest)
+```
 
 9) With the image  now on docker registry, the last thing to do is apply the manifest to create and deploy the airwolfnh-kenzan pod based on the image.
-
+```shell
 kubectl apply -f applications/hello-airwolfnh/k8s/deployment.yaml
+```
 
-10) Launch a web browser and view the service : minikube service hello-airwolfnh
-
+10) Launch a web browser and view the service : 
+```shell
+minikube service hello-airwolfnh
+```
 
 11) Now it's time to deploy jenkins.
-kubectl apply -f manifests/jenkins.yml; kubectl rollout status deployment/jenkins
+```shell
+kubectl apply -f application/k8s/jenkins.yml; kubectl rollout status deployment/jenkins
+```
 
 Now let's open the jenkins url 
 ```shell

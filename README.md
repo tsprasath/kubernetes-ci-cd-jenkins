@@ -116,5 +116,6 @@ Add into the jenkins bit
 5) How to deploy to multiple environments?
 6) Show a video configuring jenkins
 7) Mention jenkinsfile edits for docker registry and all other files that refer to it.
+8) Mention about the hbac rules.
 
 

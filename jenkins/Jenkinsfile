@@ -12,7 +12,7 @@ node {
     imageName = "${registryHost}${appName}:${tag}"
     env.BUILDIMG=imageName
     stage "Build"
-        sh "docker build -t ${imageName} -f application/hello-airwolfnh/Dockerfile application/hello-airwolfnh"
+        sh "docker build -t ${imageName} -f application/k8s/Dockerfile application/hello-airwolfnh"
 
     stage "Push"
         withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'password', usernameVariable: 'username')]) {

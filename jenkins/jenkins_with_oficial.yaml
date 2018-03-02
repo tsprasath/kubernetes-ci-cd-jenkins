@@ -55,7 +55,7 @@ spec:
         tier: jenkins
     spec:
       containers:
-      - image: airwolfnh/jenkins_kubernetes:oficial_v4
+      - image: airwolfnh/jenkins_kubernetes:oficial_v7
         name: jenkins
         securityContext:
           privileged: true
@@ -64,14 +64,9 @@ spec:
           name: jenkins
         volumeMounts:
         - name: jenkins-persistent-storage
-          mountPath: /root/.jenkins
-        - name: docker
-          mountPath: /var/run/docker.sock
+          mountPath: /var/jenkins_home
       serviceAccountName: jenkins
       volumes:
-      - name: docker
-        hostPath:
-          path: /var/run/docker.sock
       - name: jenkins-persistent-storage
         persistentVolumeClaim:
           claimName: jenkins-claim
